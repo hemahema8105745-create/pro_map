@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual-to-Audio Accessibility Mapper</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Visual-to-Audio Accessibility Mapper</h2>
+
+        <!-- Image Upload -->
+        <input type="file" id="imageInput" accept="image/*">
+        <img id="preview" style="display:none">
+
+        <!-- Generate Description -->
+        <button id="generateBtn">Generate Description</button>
+
+        <!-- Description Output -->
+        <textarea id="descriptionBox" placeholder="Description appears here..."></textarea>
+
+        <!-- Audio and download buttons -->
+        <button id="playAudioBtn">Play Audio</button>  
+        <button id="downloadTextBtn">Download Text</button>
+        <button id="downloadAudioBtn">Download Audio</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+---
+
+✅ 2️⃣ CSS (style.css)
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    padding: 30px;
+    text-align: center;
+}
+
+.container {
+    width: 90%;
+    max-width: 600px;
+    background: white;
+    padding: 25px;
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #bbb;
+}
+
+input, button {
+    padding: 10px;
+    margin: 10px 0;
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #888;
+}
+
+button {
+    background: #0066ff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+}
+
+button:hover {
+    background: #0048c7;
+}
+
+#preview {
+    width: 100%;
+    margin-top: 15px;
+    border-radius: 8px;
+}
+
+#descriptionBox {
+    width: 100%;
+    height: 120px;
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 6px;
+}
+
+
+---
+
+✅ 3️⃣ JavaScript (script.js)
+
+// Show image preview
+document.getElementById("imageInput").addEventListener("change", function(event){
+    const img = document.getElementById("preview");
+    img.src = URL.createObjectURL(event.target.files[0]);
+    img.style.display = "block";
+});
+
+// Mock description generator (replace with AI API later)
+document.getElementById("generateBtn").addEventListener("click", function() {
+    let desc = "A concise narrated description of the uploaded image.";
+    document.getElementById("descriptionBox").value = desc;
+});
+
+// Play audio (TTS)
+document.getElementById("playAudioBtn").addEventListener("click", function() {
+    let text = document.getElementById("descriptionBox").value;
+    let speech = new SpeechSynthesisUtterance(text);
+    speech.lang = "en-US";
+    speechSynthesis.speak(speech);
+});
+
+// Download text
+document.getElementById("downloadTextBtn").addEventListener("click", function() {
+    let text = document.getElementById("descriptionBox").value;
+    let blob = new Blob([text], { type: "text/plain" });
+    let url = URL.createObjectURL(blob);
+
+    let a = document.createElement("a");
+    a.href = url;
+    a.download = "description.txt";
+    a.click();
+});
+
+// Download audio (needs backend)
+document.getElementById("downloadAudioBtn").addEventListener("click", function() {
+    alert("Downloading audio requires backend TTS API (e.g., Google, Azure, OpenAI).");
+});
+
